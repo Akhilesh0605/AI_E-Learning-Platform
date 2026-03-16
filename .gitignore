@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+.env
+.env.*
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Other
+*.sqlite3
+*.db
+
+# Ignore shell scripts output
+*.sh~
+
+# Ignore requirements lock files
+pipfile.lock
+poetry.lock
+
+# Ignore test results
+htmlcov/
+coverage.xml
+
+# Ignore backups
+*.bak
+
+# Ignore frontend build
+node_modules/
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+
+# Ignore compiled files
+*.so
+*.dll
+*.exe
+
+# Ignore cache
+.cache/
+
+# Ignore AI generated files
+*.pt
+*.ckpt
+*.h5
+
+# Ignore personal files
+*.personal
+
+# Ignore backup folders
+backup/
