@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 import httpx
-from backend.schemas import ChatRequest, ChatResponse
+from schemas import ChatRequest, ChatResponse
 from dotenv import load_dotenv
 import os
 

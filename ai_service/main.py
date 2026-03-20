@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from ai_service.agents import (
+from agents import (
     teaching_agent,
     course_agent,
     quiz_agent,
