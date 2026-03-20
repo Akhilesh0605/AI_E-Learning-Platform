@@ -18,24 +18,24 @@ DIFFICULTY_CONTEXT = {
     "hard": "analysis, synthesis, and tricky edge-case questions, suitable for advanced learners",
 }
 
-QUIZ_SCHEMA = """{
+QUIZ_SCHEMA = """{{
   "topic": "string",
   "difficulty": "string",
   "questions": [
-    {
+    {{
       "question_number": integer,
       "question": "string",
-      "options": {
+      "options": {{
         "A": "string",
         "B": "string",
         "C": "string",
         "D": "string"
-      },
+      }},
       "correct_answer": "A|B|C|D",
       "explanation": "string"
-    }
+    }}
   ]
-}"""
+}}"""
 
 
 class QuizGenerateRequest(BaseModel):
