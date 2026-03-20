@@ -58,7 +58,7 @@ Try generating the same course topic at `beginner` vs `advanced` — the curricu
 Frontend    →  Streamlit (deployed on Streamlit Cloud)
 Backend     →  FastAPI (API gateway, deployed on Render)
 AI Service  →  FastAPI + LangChain microservice (deployed on Render)
-LLM         →  [YOUR MODEL NAME] via Groq API
+LLM         →  openai/gpt-oss-120b via Groq API
 CI/CD       →  GitHub Actions + Render auto-deploy + Streamlit Cloud
 ```
 
