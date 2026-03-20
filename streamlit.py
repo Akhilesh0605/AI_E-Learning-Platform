@@ -456,7 +456,7 @@ elif page == "🎓 Teaching Agent":
 
     if st.button("Ask AI 🤖"):
         with st.spinner("Thinking..."):
-            data, err = api_post("/api/chat/ask", json={
+            data, err = api_post("/api/chat", json={
                 "question": question, "subject": subject, "level": level
             })
         if err:
@@ -732,7 +732,7 @@ elif page == "🔮 Question Predictor":
 
     if st.button("Predict Questions 🔮"):
         with st.spinner("Analysing exam patterns..."):
-            data, err = api_post("/api/predict/important-questions", json={
+            data, err = api_post("/api/questions/predict", json={
                 "topic": p_topic, "level": p_level, "exam_type": p_exam
             })
         if err:
