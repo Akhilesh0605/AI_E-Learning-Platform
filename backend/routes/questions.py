@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 import httpx
 from backend.schemas import PredictQuestionsRequest
+import os
 
 router = APIRouter(tags=["Questions"])
-AI_BASE = "http://localhost:8001"
+AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")
 
 
 @router.post("/questions/predict")

@@ -1,9 +1,10 @@
 from fastapi import APIRouter, UploadFile, File, Form
 import httpx
 from backend.schemas import SummarizeRequest
+import os
 
 router = APIRouter(tags=["Notes"])
-AI_BASE = "http://localhost:8001"
+AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")
 
 
 @router.post("/notes/from-pdf")
