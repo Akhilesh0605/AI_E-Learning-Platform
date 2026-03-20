@@ -1,6 +1,81 @@
-# Smart E-Learning Platform
+# 🎓 Smart E-Learning Platform
 
-An AI-powered backend platform with **5 intelligent agents** built on LangChain + Groq (llama3-70b-8192).
+> An AI-powered multi-agent learning platform that generates courses, quizzes, and study notes — adapting to your level in real time.
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-learningwithai.streamlit.app-00d4aa?style=for-the-badge)](https://learningwithai.streamlit.app)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![LangChain](https://img.shields.io/badge/LangChain-0.1+-000000?style=for-the-badge)](https://langchain.com)
+[![Deployed on Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=for-the-badge)](https://render.com)
+
+---
+
+## 🚀 Live Demo
+
+**[learningwithai.streamlit.app](https://learningwithai.streamlit.app)**
+
+> ⚠️ Hosted on Render free tier — first request may take ~30s to wake the service.
+
+---
+
+## What It Does
+
+Most AI learning tools give you the same content regardless of who you are. This platform adapts everything — course structure, explanations, quiz difficulty, and study notes — based on your selected level.
+
+A beginner asking "What is recursion?" gets an analogy about Russian nesting dolls.  
+An advanced user gets stack frames, tail call optimization, and edge cases.
+
+Same question. Completely different output. That's the core idea.
+
+---
+
+## 5 AI Agents
+
+| Agent | Endpoint | What It Does |
+|-------|----------|-------------|
+| 📚 **Course Generator** | `POST /api/course/generate` | Generates full curriculum + module content + code examples in one action |
+| 🎓 **Teaching Agent** | `POST /api/chat/ask` | Answers any question with level-adaptive explanations |
+| 📝 **Quiz Engine** | `POST /api/quiz/generate` | Generates MCQ quizzes with per-question feedback and scoring |
+| 📄 **Smart Notes** | `POST /api/notes/summarize` | Converts raw text or PDF into structured study notes |
+| 🔮 **Question Predictor** | `POST /api/questions/predict` | Predicts high-probability exam questions by topic and exam type |
+
+---
+
+## Level Adaptation
+
+| Level | Behavior |
+|-------|----------|
+| `beginner` | No jargon, real-world analogies, every term defined |
+| `intermediate` | Assumes basics, focuses on *how* and *why*, worked examples |
+| `advanced` | Deep internals, edge cases, tradeoffs, production patterns |
+
+Try generating the same course topic at `beginner` vs `advanced` — the curriculum is completely different.
+
+---
+
+## Tech Stack
+
+```
+Frontend    →  Streamlit (deployed on Streamlit Cloud)
+Backend     →  FastAPI (API gateway, deployed on Render)
+AI Service  →  FastAPI + LangChain microservice (deployed on Render)
+LLM         →  [YOUR MODEL NAME] via Groq API
+CI/CD       →  GitHub Actions + Render auto-deploy + Streamlit Cloud
+```
+
+### Architecture
+
+```
+User (Streamlit)
+      │
+      ▼
+FastAPI Backend (port 8000)     ← API gateway, request validation
+      │
+      ▼
+AI Microservice (port 8001)     ← LangChain agents, LLM calls
+      │
+      ▼
+Groq API ([YOUR MODEL NAME])    ← Fast inference
+```
 
 ---
 
@@ -8,7 +83,7 @@ An AI-powered backend platform with **5 intelligent agents** built on LangChain 
 
 ```
 elearning-platform/
-├── backend/                   # FastAPI gateway (port 8000)
+├── backend/                   # FastAPI gateway
 │   ├── main.py
 │   ├── schemas.py
 │   └── routes/
@@ -17,7 +92,7 @@ elearning-platform/
 │       ├── notes.py
 │       ├── questions.py
 │       └── course.py
-├── ai_service/                # LangChain AI microservice (port 8001)
+├── ai_service/                # LangChain AI microservice
 │   ├── main.py
 │   └── agents/
 │       ├── teaching_agent.py
@@ -25,123 +100,116 @@ elearning-platform/
 │       ├── quiz_agent.py
 │       ├── notes_agent.py
 │       └── question_predictor.py
-├── .env
+├── streamlit.py               # Streamlit frontend
+├── .env.example
 ├── requirements.txt
-└── start.sh
+└── start.sh                   # Local dev launcher
 ```
 
 ---
 
-## Setup
+## Local Setup
 
-### 1. Install dependencies
+### 1. Clone and install
+
 ```bash
+git clone https://github.com/akhilesh0605/elearning-platform
+cd elearning-platform
 pip install -r requirements.txt
 ```
 
-### 2. Set your Groq API key
-Edit `.env`:
+### 2. Set environment variables
+
+```bash
+cp .env.example .env
+# Add your GROQ_API_KEY to .env
 ```
-GROQ_API_KEY=your_groq_api_key_here
-```
-Get a free key at https://console.groq.com
+
+Get a free Groq API key at [console.groq.com](https://console.groq.com)
 
 ### 3. Run both services
+
 ```bash
 bash start.sh
 ```
 
-Or run them separately:
+Or separately:
+
 ```bash
 # Terminal 1 — AI Microservice
 uvicorn ai_service.main:app --port 8001 --reload
 
 # Terminal 2 — Backend Gateway
 uvicorn backend.main:app --port 8000 --reload
+
+# Terminal 3 — Streamlit Frontend
+streamlit run streamlit.py
+```
+
+### 4. Open
+
+- Streamlit UI: `http://localhost:8501`
+- Backend docs: `http://localhost:8000/docs`
+- AI service docs: `http://localhost:8001/docs`
+
+---
+
+## API Examples
+
+### Generate a full course
+```bash
+curl -X POST http://localhost:8000/api/course/generate \
+  -H "Content-Type: application/json" \
+  -d '{"topic": "Python", "level": "beginner", "num_modules": 5}'
+```
+
+### Ask the Teaching Agent
+```bash
+curl -X POST http://localhost:8000/api/chat/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is recursion?", "subject": "cs", "level": "intermediate"}'
+```
+
+### Generate a quiz
+```bash
+curl -X POST http://localhost:8000/api/quiz/generate \
+  -H "Content-Type: application/json" \
+  -d '{"topic": "Binary Trees", "num_questions": 5, "difficulty": "medium"}'
 ```
 
 ---
 
-## API Reference
+## Deployment
 
-### 🎓 Teaching Agent
-**POST** `http://localhost:8001/ai/chat/ask`
-```json
-{ "question": "What is recursion?", "subject": "cs", "level": "beginner" }
-```
-Levels: `beginner` | `intermediate` | `advanced`
-Subjects: `math` | `science` | `history` | `cs` | `general`
+| Service | Platform | URL |
+|---------|----------|-----|
+| Streamlit Frontend | Streamlit Cloud | [learningwithai.streamlit.app](https://learningwithai.streamlit.app) |
+| FastAPI Backend | Render | https://ai-e-learning-backend.onrender.com |
+| AI Microservice | Render | https://e-learning-aiservice.onrender.com |
 
----
-
-### 📚 Course Generator ⭐ WOW FEATURE
-**POST** `http://localhost:8001/ai/course/generate`
-```json
-{ "topic": "Python", "level": "beginner", "num_modules": 5 }
-```
-Try the same topic at `beginner` vs `advanced` — completely different curricula!
-
-**POST** `http://localhost:8001/ai/course/module-content`
-```json
-{ "topic": "Python", "module_title": "Functions and Scope", "level": "intermediate" }
-```
-Returns full module content: explanation, examples, code snippets, mini exercise.
+CI/CD: Both Render services auto-deploy on every push to `main`. Streamlit Cloud deploys automatically on push.
 
 ---
 
-### 📝 Quiz Generator & Evaluator
-**POST** `http://localhost:8001/ai/quiz/generate`
-```json
-{ "topic": "Binary Trees", "num_questions": 5, "difficulty": "medium" }
-```
+## Roadmap
 
-**POST** `http://localhost:8001/ai/quiz/evaluate`
-```json
-{
-  "question": "What is the time complexity of binary search?",
-  "correct_answer": "O(log n)",
-  "student_answer": "O(n log n)"
-}
-```
+- [x] 5 AI agents with level adaptation
+- [x] Full course generation pipeline
+- [x] Stateful MCQ quiz with scoring
+- [x] PDF → Smart Notes pipeline
+- [x] CI/CD deployment (GitHub Actions + Render + Streamlit Cloud)
+- [ ] LangGraph orchestration for parallel agent execution
+- [ ] OCR pipeline — photograph handwritten notes → generate course
+- [ ] RAG from student's own notes (ChromaDB + sentence-transformers)
+- [ ] LangSmith observability and token cost tracking
+- [ ] React + Tailwind frontend rewrite
 
 ---
 
-### 📄 PDF to Smart Notes
-**POST** `http://localhost:8001/ai/notes/from-pdf` (multipart/form-data)
-- `file`: PDF file upload
-- `level`: beginner | intermediate | advanced
+## Built By
 
-**POST** `http://localhost:8001/ai/notes/summarize`
-```json
-{ "text": "Your raw text here...", "level": "advanced" }
-```
+**Akhilesh Kovelakuntla** — 3rd Year CS Student  
+Building AI agent systems for real-world learning problems.
 
----
-
-### 🔮 Important Questions Predictor
-**POST** `http://localhost:8001/ai/predict/important-questions`
-```json
-{ "topic": "Operating Systems", "level": "advanced", "exam_type": "university" }
-```
-Exam types: `university` | `competitive` | `school`
-
----
-
-## Level Behavior
-
-| Level | Teaching Style |
-|-------|---------------|
-| `beginner` | No jargon, real-world analogies, define every term |
-| `intermediate` | Assume basics, focus on *how* and *why*, worked examples |
-| `advanced` | Deep internals, edge cases, tradeoffs, production patterns |
-
----
-
-## Demo Flow (for reviewers)
-
-1. Open **http://localhost:8001/docs**
-2. Hit `/ai/course/generate` with `topic=Python, level=beginner` → see a structured 5-module course
-3. Hit the same endpoint with `level=advanced` → completely different curriculum
-4. Hit `/ai/course/module-content` to drill into any module
-5. Hit `/ai/quiz/generate` with matching difficulty
-6. Hit `/ai/predict/important-questions` for exam prep
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Akhilesh%20Kovelakuntla-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/akhilesh-kovelakuntla-09a488265)
+[![GitHub](https://img.shields.io/badge/GitHub-akhilesh0605-181717?style=flat&logo=github)](https://github.com/akhilesh0605)
