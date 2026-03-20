@@ -270,7 +270,7 @@ elif page == "📚 Course Generator":
 
             # Step 1 — Course structure
             with st.spinner("Designing curriculum structure..."):
-                data, err = api_post("/ai/course/generate", json={
+                data, err = api_post("/api/course/generate", json={
                     "topic": topic, "level": level, "num_modules": num_modules
                 })
 
@@ -289,7 +289,7 @@ elif page == "📚 Course Generator":
                         (i + 1) / len(modules),
                         text=f"Module {mod.get('module_number')}: {mod.get('title')}..."
                     )
-                    mc_data, mc_err = api_post("/ai/course/module-content", json={
+                    mc_data, mc_err = api_post("/api/course/module-content", json={
                         "topic": topic,
                         "module_title": mod.get("title", ""),
                         "level": level,
@@ -395,7 +395,7 @@ elif page == "📚 Course Generator":
 
         if st.button("Get Module Content 📖"):
             with st.spinner("Generating module content..."):
-                data, err = api_post("/ai/course/module-content", json={
+                data, err = api_post("/api/course/module-content", json={
                     "topic": mc_topic, "module_title": mc_module, "level": mc_level
                 })
 
@@ -456,7 +456,7 @@ elif page == "🎓 Teaching Agent":
 
     if st.button("Ask AI 🤖"):
         with st.spinner("Thinking..."):
-            data, err = api_post("/ai/chat/ask", json={
+            data, err = api_post("/api/chat/ask", json={
                 "question": question, "subject": subject, "level": level
             })
         if err:
@@ -489,7 +489,7 @@ elif page == "📝 Quiz Generator":
 
         if st.button("Generate Quiz 📝"):
             with st.spinner("Generating questions..."):
-                data, err = api_post("/ai/quiz/generate", json={
+                data, err = api_post("/api/quiz/generate", json={
                     "topic": q_topic, "num_questions": q_num, "difficulty": q_diff
                 })
             if err:
@@ -625,7 +625,7 @@ elif page == "📝 Quiz Generator":
 
         if st.button("Evaluate ✅"):
             with st.spinner("Evaluating..."):
-                data, err = api_post("/ai/quiz/evaluate", json={
+                data, err = api_post("/api/quiz/evaluate", json={
                     "question": eq, "correct_answer": correct, "student_answer": student
                 })
             if err:
@@ -664,7 +664,7 @@ elif page == "📄 Smart Notes":
 
         if st.button("Generate Notes 📄"):
             with st.spinner("Generating notes..."):
-                data, err = api_post("/ai/notes/summarize", json={
+                data, err = api_post("/api/notes/summarize", json={
                     "text": text_input, "level": n_level
                 })
             if err:
@@ -690,7 +690,7 @@ elif page == "📄 Smart Notes":
             if st.button("Extract Notes 📑"):
                 with st.spinner("Extracting and summarising PDF..."):
                     data, err = api_post(
-                        "/ai/notes/from-pdf",
+                        "/api/notes/from-pdf",
                         files={"file": (
                             st.session_state.pdf_name,
                             st.session_state.pdf_bytes,
@@ -732,7 +732,7 @@ elif page == "🔮 Question Predictor":
 
     if st.button("Predict Questions 🔮"):
         with st.spinner("Analysing exam patterns..."):
-            data, err = api_post("/ai/predict/important-questions", json={
+            data, err = api_post("/api/predict/important-questions", json={
                 "topic": p_topic, "level": p_level, "exam_type": p_exam
             })
         if err:
