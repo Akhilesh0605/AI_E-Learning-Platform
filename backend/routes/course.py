@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 import httpx
-from backend.schemas import CourseGenerateRequest, ModuleContentRequest
+from schemas import CourseGenerateRequest, ModuleContentRequest
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 router = APIRouter(tags=["Course"])
 
 AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")

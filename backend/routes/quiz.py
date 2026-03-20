@@ -1,8 +1,10 @@
 from fastapi import APIRouter
 import httpx
-from backend.schemas import QuizGenerateRequest, QuizEvaluateRequest
+from schemas import QuizGenerateRequest, QuizEvaluateRequest
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 router = APIRouter(tags=["Quiz"])
 AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")
 

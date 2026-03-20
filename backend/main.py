@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes import chat, quiz, notes, questions, course
+from routes import chat, quiz, notes, questions, course
 
 app = FastAPI(
     title="Smart E-Learning Platform — Backend",

@@ -1,8 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, Form
 import httpx
-from backend.schemas import SummarizeRequest
+from schemas import SummarizeRequest
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 router = APIRouter(tags=["Notes"])
 AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")
 

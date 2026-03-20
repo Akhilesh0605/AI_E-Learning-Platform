@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 import httpx
-from backend.schemas import PredictQuestionsRequest
+from schemas import PredictQuestionsRequest
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 router = APIRouter(tags=["Questions"])
 AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")
 

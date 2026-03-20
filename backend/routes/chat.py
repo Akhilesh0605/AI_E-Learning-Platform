@@ -1,7 +1,10 @@
 from fastapi import APIRouter
 import httpx
 from backend.schemas import ChatRequest, ChatResponse
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 router = APIRouter(tags=["Chat"])
 AI_BASE= os.getenv("AI_SERVICE_URL", "http://localhost:8001")
