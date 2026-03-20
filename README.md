@@ -58,7 +58,7 @@ Try generating the same course topic at `beginner` vs `advanced` — the curricu
 Frontend    →  Streamlit (deployed on Streamlit Cloud)
 Backend     →  FastAPI (API gateway, deployed on Render)
 AI Service  →  FastAPI + LangChain microservice (deployed on Render)
-LLM         →  openai/gpt-oss-120b via Groq API
+LLM         →  openai/gpt-oss-120b via OpenRouter
 CI/CD       →  GitHub Actions + Render auto-deploy + Streamlit Cloud
 ```
 
@@ -68,13 +68,15 @@ CI/CD       →  GitHub Actions + Render auto-deploy + Streamlit Cloud
 User (Streamlit)
       │
       ▼
-FastAPI Backend (port 8000)     ← API gateway, request validation
+FastAPI Backend                 ← API gateway, request validation
+https://ai-e-learning-backend.onrender.com
       │
       ▼
-AI Microservice (port 8001)     ← LangChain agents, LLM calls
+AI Microservice                 ← LangChain agents, LLM calls
+https://e-learning-aiservice.onrender.com
       │
       ▼
-Groq API ([YOUR MODEL NAME])    ← Fast inference
+OpenRouter (openai/gpt-oss-120b) ← LLM inference
 ```
 
 ---
@@ -82,7 +84,7 @@ Groq API ([YOUR MODEL NAME])    ← Fast inference
 ## Project Structure
 
 ```
-elearning-platform/
+AI_E-Learning-Platform/
 ├── backend/                   # FastAPI gateway
 │   ├── main.py
 │   ├── schemas.py
@@ -113,8 +115,8 @@ elearning-platform/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/akhilesh0605/elearning-platform
-cd elearning-platform
+git clone https://github.com/Akhilesh0605/AI_E-Learning-Platform.git
+cd AI_E-Learning-Platform
 pip install -r requirements.txt
 ```
 
@@ -122,10 +124,12 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Add your GROQ_API_KEY to .env
+# Add your API keys to .env
 ```
 
-Get a free Groq API key at [console.groq.com](https://console.groq.com)
+```env
+OPENROUTER_API_KEY=your_key_here
+```
 
 ### 3. Run both services
 
@@ -158,21 +162,21 @@ streamlit run streamlit.py
 
 ### Generate a full course
 ```bash
-curl -X POST http://localhost:8000/api/course/generate \
+curl -X POST https://ai-e-learning-backend.onrender.com/api/course/generate \
   -H "Content-Type: application/json" \
   -d '{"topic": "Python", "level": "beginner", "num_modules": 5}'
 ```
 
 ### Ask the Teaching Agent
 ```bash
-curl -X POST http://localhost:8000/api/chat/ask \
+curl -X POST https://ai-e-learning-backend.onrender.com/api/chat/ask \
   -H "Content-Type: application/json" \
   -d '{"question": "What is recursion?", "subject": "cs", "level": "intermediate"}'
 ```
 
 ### Generate a quiz
 ```bash
-curl -X POST http://localhost:8000/api/quiz/generate \
+curl -X POST https://ai-e-learning-backend.onrender.com/api/quiz/generate \
   -H "Content-Type: application/json" \
   -d '{"topic": "Binary Trees", "num_questions": 5, "difficulty": "medium"}'
 ```
@@ -212,4 +216,4 @@ CI/CD: Both Render services auto-deploy on every push to `main`. Streamlit Cloud
 Building AI agent systems for real-world learning problems.
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Akhilesh%20Kovelakuntla-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/akhilesh-kovelakuntla-09a488265)
-[![GitHub](https://img.shields.io/badge/GitHub-akhilesh0605-181717?style=flat&logo=github)](https://github.com/akhilesh0605)
+[![GitHub](https://img.shields.io/badge/GitHub-Akhilesh0605-181717?style=flat&logo=github)](https://github.com/Akhilesh0605)
